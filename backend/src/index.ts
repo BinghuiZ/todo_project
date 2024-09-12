@@ -4,6 +4,12 @@ import TodoRouter from './routes/todos';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Middleware to parse JSON bodies
+app.use(express.json());
+
+// Middleware to parse URL-encoded form data
+app.use(express.urlencoded({ extended: true }));
+
 app.use('/todos', TodoRouter);
 
 app.listen(PORT, () => {

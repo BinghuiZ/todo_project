@@ -4,7 +4,14 @@
         "module": "commonjs",
         "outDir": "./dist",
         "rootDir": "./src",
-        "strict": true,
+        "strict": true, // This enables all strict type-checking options
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "strictBindCallApply": true,
+        "strictPropertyInitialization": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "alwaysStrict": true,
         "esModuleInterop": true,
         "skipLibCheck": true
     },
