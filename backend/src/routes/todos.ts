@@ -1,5 +1,11 @@
 import express from 'express'
-import { getAllTodos, getTodo, createTodo, updateTodo, deleteTodo } from '../controllers/TodoController'
+import {
+  getAllTodos,
+  getTodo,
+  createTodo,
+  updateTodo,
+  deleteTodo,
+} from '../controllers/TodoController'
 const router = express.Router()
 
 router.get('/', getAllTodos)

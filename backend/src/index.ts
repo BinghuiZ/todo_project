@@ -1,6 +1,6 @@
 import express from 'express';
 import TodoRouter from './routes/todos';
-import { testDbConnection } from './db/db';
+import runDbMigrations from './db/migrations';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,11 +13,12 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/todos', TodoRouter);
 
-const startServer = async () => {
-  await testDbConnection(); // Test the database connection
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
-};
+async function start() {
+  await runDbMigrations();
 
-startServer();
+  app.listen(PORT, () => {
+    console.log(`😎😇 Running on port ${PORT} 😇😎`);
+  });
+}
+
+start();

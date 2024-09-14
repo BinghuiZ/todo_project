@@ -1,10 +1,10 @@
 // src/todoQueries.ts
-import pool from '../db/db'
+import db from '../db'
 import { Todo } from '../models/Todo'
 
 export const getTodos = async () => {
   try {
-    const res = await pool.query('SELECT * FROM todos');
+    const res = await db.query('SELECT * FROM todos;');
     return res.rows;
   } catch (error) {
     console.error('Error executing query', error);
@@ -14,7 +14,7 @@ export const getTodos = async () => {
 
 export const getTodoById = async (id: number): Promise<Todo> => {
   // Specify the return type as Promise<Todo>
-  const res = await pool.query('SELECT * FROM todos WHERE id = $1', [id])
+  const res = await db.query('SELECT * FROM todos WHERE id = $1', [id])
   return res.rows[0]
 }
 
@@ -22,7 +22,7 @@ export const createTodo = async (
   name: string
 ): Promise<Todo> => {
   // Specify the return type as Promise<Todo>
-  const res = await pool.query(
+  const res = await db.query(
     'INSERT INTO todos (name) VALUES ($1) RETURNING *',
     [name]
   )
@@ -35,7 +35,7 @@ export const updateTodo = async (
   done: boolean
 ): Promise<Todo> => {
   // Specify the return type as Promise<Todo>
-  const res = await pool.query(
+  const res = await db.query(
     'UPDATE todos SET name = $1, done = $2 WHERE id = $3 RETURNING *',
     [name, done, id]
   )
@@ -44,5 +44,5 @@ export const updateTodo = async (
 
 export const deleteTodo = async (id: number): Promise<void> => {
   // Specify the return type as Promise<void>
-  await pool.query('DELETE FROM todos WHERE id = $1', [id])
+  await db.query('DELETE FROM todos WHERE id = $1', [id])
 }
