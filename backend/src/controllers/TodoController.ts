@@ -1,23 +1,71 @@
-import { Request, Response } from 'express'
+import { Request, Response } from 'express';
+import {
+  getTodos,
+  getTodoById,
+  createTodo as createTodoRepository,
+  updateTodo as updateTodoRepository,
+  deleteTodo as deleteTodoRepository,
+} from '../repository/todoRepository';
+import { Todo } from '../models/Todo';
 
-const getAllTodos = (req: Request, res: Response) => {
-  res.send('Hello World! asdfasdfdasf').status(200)
-}
+const getAllTodos = async (req: Request, res: Response) => {
+  try {
+    console.log('get all todos');
+    const todos = await getTodos();
+    res.status(200).json(todos);
+  } catch (error) {
+    console.error('Error fetching todos:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 
-const getTodo = (req: Request, res: Response) => {
-  res.send(`Hello World! asdfasdfdasf  ${req.params.id}`).status(200)
-}
+const getTodo = async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(req.params.id);
+    const todo = await getTodoById(id);
+    if (todo !== undefined) {
+      res.json(todo).status(200);
+    } else {
+      res.status(404).json({ error: 'Todo not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 
-const createTodo = (req: Request, res: Response) => {
-  res.send('Hello World! asdfasdfdasf').status(200)
-}
+const createTodo = async (req: Request, res: Response) => {
+  try {
+    const { name, done } = req.body;
+    const todo: Todo = await createTodoRepository(name);
+    res.json(todo).status(201);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 
-const updateTodo = (req: Request, res: Response) => {
-  res.send(`Hello World! asdfasdfdasf  ${req.params.id}`).status(200)
-}
+const updateTodo = async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(req.params.id);
+    const { name, done } = req.body;
+    const todo: Todo | undefined = await updateTodoRepository(id, name, done);
+    if (todo) {
+      res.json(todo).status(200);
+    } else {
+      res.status(404).json({ error: 'Todo not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 
-const deleteTodo = (req: Request, res: Response) => {
-  res.send(`Hello World! asdfasdfdasf  ${req.params.id}`).status(200)
-}
+const deleteTodo = async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(req.params.id);
+    await deleteTodoRepository(id);
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 
-export { getAllTodos, getTodo, createTodo, updateTodo, deleteTodo }
+export { getAllTodos, getTodo, createTodo, updateTodo, deleteTodo };
