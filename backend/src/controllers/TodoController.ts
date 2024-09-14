@@ -10,7 +10,6 @@ import { Todo } from '../models/Todo';
 
 const getAllTodos = async (req: Request, res: Response) => {
   try {
-    console.log('get all todos');
     const todos = await getTodos();
     res.status(200).json(todos);
   } catch (error) {
@@ -54,6 +53,7 @@ const updateTodo = async (req: Request, res: Response) => {
       res.status(404).json({ error: 'Todo not found' });
     }
   } catch (error) {
+    console.error('Error updating todo:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };

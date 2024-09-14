@@ -13,7 +13,6 @@ export const getTodos = async () => {
 };
 
 export const getTodoById = async (id: number): Promise<Todo> => {
-  // Specify the return type as Promise<Todo>
   const res = await db.query('SELECT * FROM todos WHERE id = $1', [id])
   return res.rows[0]
 }
@@ -21,7 +20,6 @@ export const getTodoById = async (id: number): Promise<Todo> => {
 export const createTodo = async (
   name: string
 ): Promise<Todo> => {
-  // Specify the return type as Promise<Todo>
   const res = await db.query(
     'INSERT INTO todos (name) VALUES ($1) RETURNING *',
     [name]
@@ -34,7 +32,6 @@ export const updateTodo = async (
   name: string,
   done: boolean
 ): Promise<Todo> => {
-  // Specify the return type as Promise<Todo>
   const res = await db.query(
     'UPDATE todos SET name = $1, done = $2 WHERE id = $3 RETURNING *',
     [name, done, id]
@@ -43,6 +40,5 @@ export const updateTodo = async (
 }
 
 export const deleteTodo = async (id: number): Promise<void> => {
-  // Specify the return type as Promise<void>
   await db.query('DELETE FROM todos WHERE id = $1', [id])
 }
